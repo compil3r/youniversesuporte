@@ -7,20 +7,21 @@
 		<div class="col-md-10 col-md-offset-1">
 	        <div class="panel panel-default">
 	        	<div class="panel-heading">
-	        		<i class="fa fa-ticket"> My Tickets</i>
+	        		<i class="fa fa-ticket"> Minhas Solicitações</i>
 	        	</div>
 
 	        	<div class="panel-body">
 	        		@if ($tickets->isEmpty())
-						<p>You have not created any tickets.</p>
+						<p>Você não solicitou nada ainda.</p>
 	        		@else
 		        		<table class="table">
 		        			<thead>
 		        				<tr>
-		        					<th>Category</th>
-		        					<th>Title</th>
+		        					<th>Categoria</th>
+		        					<th>Titulo</th>
 		        					<th>Status</th>
-		        					<th>Last Updated</th>
+		        					<th>Data de Solicitação</th>
+		        					<th>Ultima Atualização</th>
 		        				</tr>
 		        			</thead>
 		        			<tbody>
@@ -39,13 +40,16 @@
 		        						</a>
 		        					</td>
 		        					<td>
-		        					@if ($ticket->status === 'Open')
+		        					@if ($ticket->status === 'Aberto')
 		        						<span class="label label-success">{{ $ticket->status }}</span>
+		        					@elseif ($ticket->status === 'Em andamento')
+		        						<span class="label label-Warning">{{ $ticket->status }}</span>
 		        					@else
 		        						<span class="label label-danger">{{ $ticket->status }}</span>
 		        					@endif
 		        					</td>
-		        					<td>{{ $ticket->updated_at }}</td>
+		        					<td>{{ $ticket->created_at->format('d-m-Y - H:m') }}</td>
+		        					<td>{{ $ticket->updated_at->diffForHumans() }}</td>
 		        				</tr>
 		        			@endforeach
 		        			</tbody>

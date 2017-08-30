@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Suppor Ticket</title>
+	<title>Resposta no Ticket</title>
 </head>
 <body>
 	<p>
@@ -10,14 +10,15 @@
 	</p>
 
 	---
-	<p>Replied by: {{ $user->name }}</p>
+	
+	<p>Enviada por: {{ $user->name }}</p>
 
-	<p>Title: {{ $ticket->title }}</p>
-	<p>Title: {{ $ticket->ticket_id }}</p>
+	<p>Titulo: {{ $ticket->title }}</p>
+	<p>ID: #{{ $ticket->ticket_id }}</p>
 	<p>Status: {{ $ticket->status }}</p>
 
 	<p>
-		You can view the ticket at any time at {{ url('tickets/'. $ticket->ticket_id) }}
+		Você pode ver esse ticket a todo momento aqui: {{ url('tickets/'. $ticket->ticket_id) }}
 	</p>
 
 </body>

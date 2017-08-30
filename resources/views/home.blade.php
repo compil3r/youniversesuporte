@@ -7,18 +7,18 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+                <div class="panel-heading">Painel</div>
 
                 <div class="panel-body">
-                    <p>You are logged in!</p>
+                    <p><strong>Bem vindo, {{ucfirst(Auth::user()->name)}}!</strong></p>
 
                     @if (Auth::user()->is_admin)
                         <p>
-                            See all <a href="{{ url('admin/tickets') }}">tickets</a>
+                            Veja todos os <a href="{{ url('admin/tickets') }}">tickets</a>.
                         </p>
                     @else
                         <p>
-                            See all your <a href="{{ url('my_tickets') }}">tickets</a> or <a href="{{ url('new_ticket') }}">open new ticket</a>
+                            Veja os seus <a href="{{ url('my_tickets') }}">tickets</a> ou <a href="{{ url('new_ticket') }}">crie um novo ticket.</a>
                         </p>
                     @endif
                 </div>

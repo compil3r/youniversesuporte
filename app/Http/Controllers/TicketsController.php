@@ -24,10 +24,11 @@ class TicketsController extends Controller
      */
     public function index()
     {
-    	$tickets = Ticket::paginate(10);
+    	$tickets = Ticket::orderBy('created_at', 'desc')->paginate(10);
         $categories = Category::all();
-
-        return view('tickets.index', compact('tickets', 'categories'));
+        if(Auth::user()->is_admin) {
+            return view('tickets.index', compact('tickets', 'categories'));
+        }
     }
 
     /**
@@ -77,14 +78,14 @@ class TicketsController extends Controller
             'category_id'  => $request->input('category'),
             'priority'  => $request->input('priority'),
             'message'   => $request->input('message'),
-            'status'    => "Open",
+            'status'    => "Aberto",
         ]);
 
         $ticket->save();
 
         $mailer->sendTicketInformation(Auth::user(), $ticket);
 
-        return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id has been opened.");
+        return redirect()->to("tickets/$ticket->ticket_id")->with("status", "Sua solicitação foi enviada. Aguarde para ser respondido.");
     }
 
     /**
@@ -95,13 +96,16 @@ class TicketsController extends Controller
      */
     public function show($ticket_id)
     {
+
         $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
 
         $comments = $ticket->comments;
 
         $category = $ticket->category;
-
-        return view('tickets.show', compact('ticket', 'category', 'comments'));
+        
+        if (Auth::user() && (Auth::user()->id == $ticket->user->id || Auth::user()->is_admin == 1)) {
+           return view('tickets.show', compact('ticket', 'category', 'comments'));
+        }
     }
 
     /**
@@ -114,14 +118,33 @@ class TicketsController extends Controller
     {
         $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
 
-        $ticket->status = 'Closed';
+        $ticket->status = 'Fechado';
+
+        $ticket->save();
+
+        $ticketOwner = $ticket->user;
+        
+        $user = Auth::user();
+
+        $mailer->sendTicketStatusNotification($ticketOwner, $ticket, $user);
+
+        return redirect()->back()->with("status", "Status alterado.");
+    }
+
+      public function read($ticket_id, AppMailer $mailer)
+    {
+        $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
+
+        $ticket->status = 'Em andamento';
 
         $ticket->save();
 
         $ticketOwner = $ticket->user;
 
-        $mailer->sendTicketStatusNotification($ticketOwner, $ticket);
+        $user = Auth::user();
 
-        return redirect()->back()->with("status", "The ticket has been closed.");
+        $mailer->sendTicketStatusNotification($ticketOwner, $ticket, $user);
+
+        return redirect()->back()->with("status", "Ticket foi fechado.");
     }
 }

@@ -2,6 +2,7 @@
 namespace App\Mailers;
 
 use App\Ticket;
+use App\User;
 use Illuminate\Contracts\Mail\Mailer;
 
 class AppMailer {
@@ -11,13 +12,13 @@ class AppMailer {
 	 * from email address
 	 * @var string
 	 */
-	protected $fromAddress = 'support@supportticket.dev';
+	protected $fromAddress = 'suporte@youniverseweb.com';
 
 	/**
 	 * from name
 	 * @var string
 	 */
-	protected $fromName = 'Support Ticket';
+	protected $fromName = 'Youni Suporte';
 
 	/**
 	 * email to send to
@@ -92,12 +93,12 @@ class AppMailer {
 	 * @param  Ticket  $ticket
 	 * @return method deliver()
 	 */
-	public function sendTicketStatusNotification($ticketOwner, Ticket $ticket)
+	public function sendTicketStatusNotification($ticketOwner, Ticket $ticket, User $user)
 	{
 		$this->to = $ticketOwner->email;
 		$this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
 		$this->view = 'emails.ticket_status';
-		$this->data = compact('ticketOwner', 'ticket');
+		$this->data = compact('ticketOwner', 'ticket', 'user');
 
 		return $this->deliver();
 	}

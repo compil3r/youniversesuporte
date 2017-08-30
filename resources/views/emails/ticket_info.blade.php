@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
 	<meta charset="UTF-8">
-	<title>Suppor Ticket Information</title>
+	<title>Informações de solicitação</title>
 </head>
 <body>
 	<p>
-		Thank you {{ ucfirst($user->name) }} for contacting our support team. A support ticket has been opened for you. You will be notified when a response is made by email. The details of your ticket are shown below:
+		Obrigado, {{ ucfirst($user->name) }} por enviar a sua solicitação para nossa equipe. Um ticket de suporte foi aberto para você. Você será sempre notificado por este e-mail. Você pode observar os detalhes do seu ticket abaixo:
 	</p>
 
-	<p>Title: {{ $ticket->title }}</p>
-	<p>Priority: {{ $ticket->priority }}</p>
+	<p>Titulo: {{ $ticket->title }}</p>
+	<p>Prioridade: {{ $ticket->priority }}</p>
 	<p>Status: {{ $ticket->status }}</p>
 
 	<p>
-		You can view the ticket at any time at {{ url('tickets/'. $ticket->ticket_id) }}
+		Você pode ver esse ticket a todo o momento em: {{ url('tickets/'. $ticket->ticket_id) }}
 	</p>
 
 </body>

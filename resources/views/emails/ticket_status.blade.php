@@ -2,14 +2,25 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Suppor Ticket Status</title>
+	<title>Status do Ticket</title>
 </head>
 <body>
 	<p>
-		Hello {{ ucfirst($ticketOwner->name) }},
+		Olá, {{ ucfirst($ticketOwner->name) }},
 	</p>
 	<p>
-		Your support ticket with ID #{{ $ticket->ticket_id }} has been marked has resolved and closed.
+		Sua solicitação de suporte de ID #{{ $ticket->ticket_id }} 
+		@if($ticket->status == 'Em andamento')
+		foi lida e estamos trabalhando nisso. Assim que respondermos e/ou realizarmos alterações em seu projeto entramos em contato.
+		@else
+		foi marcada como resolvida e fechada.
+		@endif
+	</p>
+
+	<p>
+		Atenciosamente, {{$user->name}}<br>
+		<b>Equipe Youniverse Web</b>
+
 	</p>
 </body>
 </html>
